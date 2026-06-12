@@ -12,11 +12,11 @@
 // └─────────────────────────────────────────────────────┘
 const API_KEYS = {
   // Discogs: https://www.discogs.com/settings/developers → Generate token
-  DISCOGS: 'YOUR_DISCOGS_TOKEN',
+  DISCOGS: 'zTgDLOHVAFbathyKSXVSVfJyjcpshRlLKmbmdiBB',
 
   // Google Books: https://console.cloud.google.com → Enable Books API → Create key
   // Note: Google Books works without a key for basic searches (quota is just lower)
-  GOOGLE_BOOKS: 'YOUR_GOOGLE_BOOKS_API_KEY',
+  GOOGLE_BOOKS: 'AIzaSyCW1KvrNoStPO4PfqEhkdE6lpu35vSyPW8',
 
   // RAWG: https://rawg.io/apidocs → Sign up for free key
   RAWG: 'YOUR_RAWG_API_KEY',

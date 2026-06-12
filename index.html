@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vaultd — Your Physical Media Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── MOBILE OVERLAY NAV ── -->
+  <div class="nav-overlay" id="navOverlay">
+    <button class="nav-overlay__close" id="navClose" aria-label="Close menu">✕</button>
+    <nav class="nav-overlay__links">
+      <a href="#" class="nav-overlay__link" data-media="all">All Collection</a>
+      <a href="#" class="nav-overlay__link" data-media="records">Records</a>
+      <a href="#" class="nav-overlay__link" data-media="books">Books</a>
+      <a href="#" class="nav-overlay__link" data-media="games">Games</a>
+      <a href="#" class="nav-overlay__link" data-media="film">Film</a>
+      <hr class="nav-overlay__rule" />
+      <a href="#" class="nav-overlay__link" id="overlayWantlistLink">Wantlist</a>
+      <a href="#" class="nav-overlay__link" id="overlayStatsLink">Stats</a>
+    </nav>
+  </div>
+
+  <!-- ── TOP BAR ── -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <button class="topbar__hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a class="topbar__logo" href="#">Vaultd</a>
+      <div class="topbar__search-wrap">
+        <input class="topbar__search" id="globalSearch" type="text" placeholder="Search your collection…" autocomplete="off" />
+        <div class="topbar__search-results" id="searchResults"></div>
+      </div>
+      <nav class="topbar__nav">
+        <a href="#" class="topbar__navlink" data-media="all">Collection</a>
+        <a href="#" class="topbar__navlink" data-media="records">Records</a>
+        <a href="#" class="topbar__navlink" data-media="books">Books</a>
+        <a href="#" class="topbar__navlink" data-media="games">Games</a>
+        <a href="#" class="topbar__navlink" data-media="film">Film</a>
+      </nav>
+      <div class="topbar__actions">
+        <button class="btn btn--ghost" id="wantlistBtn">Wantlist</button>
+        <button class="btn btn--primary" id="addBtn">+ Add</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="heroSection">
+    <div class="hero__inner">
+      <p class="hero__eyebrow">Your physical world, catalogued</p>
+      <h1 class="hero__heading">Everything you<br /><em>own, want & love</em></h1>
+      <p class="hero__sub">Records · Books · Games · Film — one vault for all your physical media.</p>
+      <div class="hero__cta-row">
+        <button class="btn btn--primary btn--lg" id="heroAddBtn">Start Your Vault</button>
+        <button class="btn btn--ghost btn--lg" id="heroExploreBtn">Browse Collection</button>
+      </div>
+    </div>
+    <div class="hero__tape-strip">
+      <span>RECORDS</span><span>·</span><span>BOOKS</span><span>·</span><span>GAMES</span><span>·</span>
+      <span>FILM</span><span>·</span><span>VINYL</span><span>·</span><span>BLU-RAY</span><span>·</span>
+      <span>RECORDS</span><span>·</span><span>BOOKS</span><span>·</span><span>GAMES</span><span>·</span>
+      <span>FILM</span><span>·</span><span>VINYL</span><span>·</span><span>BLU-RAY</span><span>·</span>
+    </div>
+  </section>
+
+  <!-- ── MAIN APP ── -->
+  <main class="app" id="appSection" style="display:none;">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__stats">
+        <div class="stat-pill">
+          <span class="stat-pill__num" id="totalCount">0</span>
+          <span class="stat-pill__label">Items</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill__num" id="wantCount">0</span>
+          <span class="stat-pill__label">Wanted</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill__num" id="valueCount">$0</span>
+          <span class="stat-pill__label">Est. Value</span>
+        </div>
+      </div>
+
+      <nav class="sidebar__nav">
+        <button class="sidebar__link active" data-media="all">All Media</button>
+        <button class="sidebar__link" data-media="records">
+          <span class="sidebar__icon">◉</span> Records
+          <span class="sidebar__badge" data-badge="records">0</span>
+        </button>
+        <button class="sidebar__link" data-media="books">
+          <span class="sidebar__icon">▬</span> Books
+          <span class="sidebar__badge" data-badge="books">0</span>
+        </button>
+        <button class="sidebar__link" data-media="games">
+          <span class="sidebar__icon">▶</span> Games
+          <span class="sidebar__badge" data-badge="games">0</span>
+        </button>
+        <button class="sidebar__link" data-media="film">
+          <span class="sidebar__icon">◈</span> Film
+          <span class="sidebar__badge" data-badge="film">0</span>
+        </button>
+      </nav>
+
+      <div class="sidebar__section-label">Filters</div>
+      <div class="sidebar__filters">
+        <label class="filter-check">
+          <input type="checkbox" id="filterWanted" /> Wantlist only
+        </label>
+        <label class="filter-check">
+          <input type="checkbox" id="filterOwned" checked /> Owned only
+        </label>
+      </div>
+
+      <div class="sidebar__section-label">Sort</div>
+      <select class="sidebar__select" id="sortSelect">
+        <option value="added_desc">Recently Added</option>
+        <option value="added_asc">Oldest Added</option>
+        <option value="alpha_asc">A → Z</option>
+        <option value="alpha_desc">Z → A</option>
+        <option value="year_desc">Year (Newest)</option>
+        <option value="year_asc">Year (Oldest)</option>
+      </select>
+
+      <div class="sidebar__section-label">View</div>
+      <div class="sidebar__view-btns">
+        <button class="view-btn active" id="viewGrid" title="Grid">⊞</button>
+        <button class="view-btn" id="viewList" title="List">☰</button>
+      </div>
+    </aside>
+
+    <!-- Collection Grid -->
+    <section class="collection">
+      <div class="collection__header">
+        <h2 class="collection__title" id="collectionTitle">All Media</h2>
+        <span class="collection__count" id="collectionCount">0 items</span>
+      </div>
+      <div class="collection__grid" id="collectionGrid"></div>
+      <div class="collection__empty" id="collectionEmpty" style="display:none;">
+        <p class="empty__icon">◎</p>
+        <p class="empty__msg">Your vault is empty.</p>
+        <p class="empty__sub">Search for something to add to your collection.</p>
+        <button class="btn btn--primary" id="emptyAddBtn">+ Add Media</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── WANTLIST VIEW ── -->
+  <main class="app" id="wantlistSection" style="display:none;">
+    <aside class="sidebar">
+      <div class="sidebar__stats">
+        <div class="stat-pill">
+          <span class="stat-pill__num" id="wantTotalCount">0</span>
+          <span class="stat-pill__label">Wanted</span>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <button class="sidebar__link active" data-wantmedia="all">All</button>
+        <button class="sidebar__link" data-wantmedia="records">Records</button>
+        <button class="sidebar__link" data-wantmedia="books">Books</button>
+        <button class="sidebar__link" data-wantmedia="games">Games</button>
+        <button class="sidebar__link" data-wantmedia="film">Film</button>
+      </nav>
+    </aside>
+    <section class="collection">
+      <div class="collection__header">
+        <h2 class="collection__title">Wantlist</h2>
+        <span class="collection__count" id="wantlistCount">0 items</span>
+      </div>
+      <div class="collection__grid" id="wantlistGrid"></div>
+      <div class="collection__empty" id="wantlistEmpty" style="display:none;">
+        <p class="empty__icon">♡</p>
+        <p class="empty__msg">Your wantlist is empty.</p>
+        <p class="empty__sub">Mark items as "wanted" to track them here.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── ADD MODAL ── -->
+  <div class="modal-backdrop" id="addModal" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Add to Vault</h2>
+        <button class="modal__close" id="addModalClose">✕</button>
+      </div>
+      <div class="modal__tabs">
+        <button class="modal__tab active" data-tab="records">Records</button>
+        <button class="modal__tab" data-tab="books">Books</button>
+        <button class="modal__tab" data-tab="games">Games</button>
+        <button class="modal__tab" data-tab="film">Film</button>
+      </div>
+      <div class="modal__search-row">
+        <input class="modal__input" id="modalSearchInput" type="text" placeholder="Search records, books, games, or films…" />
+        <button class="btn btn--primary" id="modalSearchBtn">Search</button>
+      </div>
+      <div class="modal__results" id="modalResults">
+        <p class="modal__hint">Search above to find media to add.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DETAIL MODAL ── -->
+  <div class="modal-backdrop" id="detailModal" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal modal--wide">
+      <button class="modal__close" id="detailModalClose">✕</button>
+      <div class="detail" id="detailContent"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
